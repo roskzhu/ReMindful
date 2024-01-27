@@ -11,4 +11,12 @@ roboflow yolov8 for object detection
 stable diffusion if we have time for censoring? (to replicate adobe's generative fill tool)
 
 
+starting the backend server cmds:
+python3 -m venv venv
+source venv/bin/activate (MacOS)
+venv\Scripts\activate (Windows Powershell)
+pip install -r requirements.txt
+python3 app.py
+
+
 
