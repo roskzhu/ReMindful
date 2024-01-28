@@ -10,11 +10,55 @@ const Connect = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const media: string[] = [Marracas, Marracas, Marracas, Marracas];
 
-  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
+
+  const convertToBase64 = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const base64String = event.target?.result as string;
+      // Send the base64-encoded image to the API endpoint
+      addToDatabase(base64String, "description", "keywords");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const addToDatabase = (base64String: string, description: string, keywords: string) => {
+    // Replace 'yourApiEndpoint' with your actual API endpoint
+    const uploadEndpoint = 'http://localhost:5000/upload';
+    // http://localhost:5000/upload?image=iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8GO2jAAAAmklEQVR42mP8z8AARIhkmGADDCSCDUDSAGDBCgOFAKpAMVAIMQxAAQAAZMIgADBBgByCgAAGYAmEJFAbEAiCBngAYYAFgCBggDzAAFM+QBRQAUwAAAAASUVORK5CYII=&description=imagedescription
+    
+    console.log("base64String: ", base64String)
+    const requestBody = {
+      image: base64String,
+      description: description,
+      keywords: keywords,
+    };
+
+    // Perform the API call here, using fetch or any other HTTP library
+    fetch(uploadEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Image uploaded successfully:', data);
+        // You can handle the response from the server here
+      })
+      .catch((error) => {
+        console.error('Error uploading image:', error);
+      });
+  };
+
+
+  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("pog")
     const selectedFiles = e.currentTarget.files;
 
     if (selectedFiles) {
       setFiles(selectedFiles);
+      convertToBase64(selectedFiles[0]);
     }
   };
 
