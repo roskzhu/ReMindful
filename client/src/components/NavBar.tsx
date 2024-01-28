@@ -8,33 +8,35 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [ hoveredTab, setHoveredTab] = useState(0);
   return (
-    <NavBarContainer>
-      <NavBarSubContainer>
-        <Link to={"/"} className='link'>
-          <Label2 className='cursor: pointer;'>
-            Home
-          </Label2>
-        </Link>
-        <Link to={"/connect"} className='link'>
-          <Label2 className='cursor: pointer;'>
-            Connect
-          </Label2>
-        </Link>
-      </NavBarSubContainer>
+    <OuterContainer>
+      <NavBarContainer>
+        <NavBarSubContainer>
+          <Link to={"/"} className='link'>
+            <Label2 className='cursor: pointer;'>
+              Home
+            </Label2>
+          </Link>
+          <Link to={"/connect"} className='link'>
+            <Label2 className='cursor: pointer;'>
+              Connect
+            </Label2>
+          </Link>
+        </NavBarSubContainer>
 
-      <Label1 className="margin-left: 7rem; margin-right: 7rem; cursor: pointer;">
-          remindful.
-      </Label1>
+        <Label1 className="margin-left: 7rem; margin-right: 7rem; cursor: pointer;">
+            remindful.
+        </Label1>
 
-      <NavBarSubContainer>
-        <Button1 className='justify-self: end; cursor: pointer;'
-        onClick={() =>
-          navigate("/myMind")
-        }>
-          My Mind
-        </Button1>
-      </NavBarSubContainer>
-    </NavBarContainer>
+        <NavBarSubContainer>
+          <Button1 className='justify-self: end; cursor: pointer;'
+          onClick={() =>
+            navigate("/myMind")
+          }>
+            My Mind
+          </Button1>
+        </NavBarSubContainer>
+      </NavBarContainer>
+    </OuterContainer>
   )
 }
 
@@ -49,7 +51,6 @@ const NavBarContainer = styled.div`
   position: fixed;
   top: 0;
   border-radius: 15px;
-  left: calc((100vw - 70vw) / 2);
   justify-self: center;
   backdrop-filter: blur(5px);
   z-index: 9999;
@@ -59,6 +60,13 @@ const NavBarContainer = styled.div`
   .link {
     text-decoration: none;
   }
+`
+
+const OuterContainer = styled.div`
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 
