@@ -11,6 +11,8 @@ def print_transcript():
     data = request.json
     transcript = data.get('transcript', '')
 
+    app.logger.info('transcription: ', transcript)
+
     if not transcript:
         return jsonify({'error': 'Missing "transcript" parameter'}), 400
 
