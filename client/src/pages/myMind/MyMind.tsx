@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { IoMdSend } from "react-icons/io";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
-import Background1 from '../../assets/imgQAWRX.jpeg'
+import Background1 from '../../assets/IMG_1782.jpg'
 import BlurComponent, { BlurComponentProps } from '../../components/BlurComponent';
 
 interface ChatMessage {
