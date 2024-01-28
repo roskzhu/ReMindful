@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { IoMdSend } from "react-icons/io";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
-import Background1 from '../../assets/test.png'
+import Background1 from '../../assets/IMG_1782.jpg'
 import BlurComponent, { BlurComponentProps } from '../../components/BlurComponent';
 
 interface ChatMessage {
@@ -11,14 +11,18 @@ interface ChatMessage {
   sender: number;
 }
 
+let fetched = false;
 
 const MyMind: React.FC = () => {
   const [transcript, setTranscript] = useState<string>('');
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const [serverResponse, setServerResponse] = useState<any>(null); 
+  const [serverResponse, setServerResponse] = useState<any>(null);  // transcription
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
+  const [coordinates , setCoordinates] = useState<any>();
+
+    
    // Initialize score state
   const [score, setScore] = useState<number>(60);
 
@@ -93,8 +97,13 @@ const MyMind: React.FC = () => {
   }, [isTranscribing]);
 
   useEffect(() => {
+
+      
+
     const fetchData = async () => {
+      if (!fetched){
       try {
+        console.log("begin fetch")
         const response = await fetch('http://localhost:5000/retrieve', {
           method: 'GET',
           headers: {
@@ -104,17 +113,25 @@ const MyMind: React.FC = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setCurrentImage(data);
+          console.log("response ok: ", data)
+          // console
+          setCurrentImage(data[0]?.img_path);  // string
+          setCoordinates(data[0]?.objects_detected);  // dict of objects
         } else {
 
           console.error('Failed to retrieve data from the server.');
         }
+        fetched = true;
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    }
     };
     fetchData();
   }, []);
+
+  console.log("curr", currentImage);
+  console.log("coor: ", coordinates);
   
   const stopTranscription = (): void => {
     setIsTranscribing(false);
@@ -127,6 +144,25 @@ const MyMind: React.FC = () => {
         sender: 2,
       };
       setChatHistory([...chatHistory, newChatMessage])
+      if (transcript.split(" ").includes("soda")){
+        // If the condition is true, create a new state object without the "soda" key
+        setCoordinates({
+          ...coordinates,
+          predictSoda: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      else if (transcript.split(" ").includes("money")){
+        setCoordinates({
+          ...coordinates,
+          predictMoney: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      else if (transcript.split(" ").includes("phone")){
+        setCoordinates({
+          ...coordinates,
+          predictPhone: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
     }
   }, [transcript]);
 
@@ -139,8 +175,34 @@ const MyMind: React.FC = () => {
         sender: 2,
       };
 
+      console.log("message: ", message);
+      console.log("coordinates before: ", coordinates)
+
       setChatHistory([...chatHistory, newChatMessage]);
       setMessage("");
+      if (message.split(" ").includes("soda")){
+        // If the condition is true, create a new state object without the "soda" key
+        setCoordinates({
+          ...coordinates,
+          predictSoda: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      if (message.split(" ").includes("money")){
+        setCoordinates({
+          ...coordinates,
+          predictMoney: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      if (message.split(" ").includes("phone")){
+        console.log("phone popped")
+        // const {phone, ...newCoordinates} = coordinates;
+        setCoordinates({
+          ...coordinates,
+          predictPhone: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+
+      console.log("coordinates after: ", coordinates)
     }
   }
 
@@ -148,16 +210,32 @@ const MyMind: React.FC = () => {
     <MyMindContainer>
       <div>
         <CurrentImage>
-          <img src={Background1} />
-          {blurs && blurs.map((blur, index) => 
-            <BlurComponent 
-              x = {blur.x}
-              y = {blur.y}
-              height = {blur.height}
-              width = {blur.width}
-              key={index}
-            />
-          )}
+          <img src={Background1}/>
+            {/* {coordinates && coordinates.map((val : any, index : any) =>  // index is the type
+              <BlurComponent 
+                x = {coordinates.index[0].x}
+                y = {coordinates.index[0].y}
+                height = {coordinates.index[0].height}
+                width = {coordinates.index[0].width}
+                key={index}
+              />
+            )} */}
+            {coordinates && Object.values(coordinates).map((val: any, index: any) => (
+              <>
+              <BlurComponent 
+                x={val.length > 0 ? val[0].x : 0}
+                // x={val?.[0]?.x}
+                y={val.length > 0 ? val[0].y : 0}
+                // y={val?.[0]?.y}
+                // height={val?.[0]?.height}
+                height={val.length > 0 ? val[0].height : 0}
+                // width={val?.[0]?.width}
+                width={val.length > 0 ? val[0].width : 0}
+                key={index}
+              />              
+              {console.log("val", val, index)}
+              </>
+            ))}
         </CurrentImage>
 
         <RightContainer>
