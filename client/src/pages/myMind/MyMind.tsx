@@ -11,6 +11,8 @@ interface ChatMessage {
   sender: number;
 }
 
+let fetched = false;
+
 const MyMind: React.FC = () => {
   const [transcript, setTranscript] = useState<string>('');
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
@@ -77,7 +79,11 @@ const MyMind: React.FC = () => {
   }, [isTranscribing]);
 
   useEffect(() => {
+
+      
+
     const fetchData = async () => {
+      if (!fetched){
       try {
         console.log("begin fetch")
         const response = await fetch('http://localhost:5000/retrieve', {
@@ -97,9 +103,11 @@ const MyMind: React.FC = () => {
 
           console.error('Failed to retrieve data from the server.');
         }
+        fetched = true;
       } catch (error) {
         console.error('Error fetching data:', error);
       }
+    }
     };
     fetchData();
   }, []);
@@ -118,6 +126,25 @@ const MyMind: React.FC = () => {
         sender: 2,
       };
       setChatHistory([...chatHistory, newChatMessage])
+      if (transcript.split(" ").includes("soda")){
+        // If the condition is true, create a new state object without the "soda" key
+        setCoordinates({
+          ...coordinates,
+          predictSoda: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      else if (transcript.split(" ").includes("money")){
+        setCoordinates({
+          ...coordinates,
+          predictMoney: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      else if (transcript.split(" ").includes("phone")){
+        setCoordinates({
+          ...coordinates,
+          predictPhone: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
     }
   }, [transcript]);
 
@@ -130,12 +157,36 @@ const MyMind: React.FC = () => {
         sender: 2,
       };
 
+      console.log("message: ", message);
+      console.log("coordinates before: ", coordinates)
+
       setChatHistory([...chatHistory, newChatMessage]);
       setMessage("");
+      if (message.split(" ").includes("soda")){
+        // If the condition is true, create a new state object without the "soda" key
+        setCoordinates({
+          ...coordinates,
+          predictSoda: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      if (message.split(" ").includes("money")){
+        setCoordinates({
+          ...coordinates,
+          predictMoney: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+      if (message.split(" ").includes("phone")){
+        console.log("phone popped")
+        // const {phone, ...newCoordinates} = coordinates;
+        setCoordinates({
+          ...coordinates,
+          predictPhone: [{x: -1, y: -1, height: 0, width: 0}],
+        })
+      }
+
+      console.log("coordinates after: ", coordinates)
     }
   }
-
-
 
   return (
     <MyMindContainer>
@@ -154,10 +205,14 @@ const MyMind: React.FC = () => {
             {coordinates && Object.values(coordinates).map((val: any, index: any) => (
               <>
               <BlurComponent 
-                x={val?.[0]?.x}
-                y={val?.[0]?.y}
-                height={val?.[0]?.height}
-                width={val?.[0]?.width}
+                x={val.length > 0 ? val[0].x : 0}
+                // x={val?.[0]?.x}
+                y={val.length > 0 ? val[0].y : 0}
+                // y={val?.[0]?.y}
+                // height={val?.[0]?.height}
+                height={val.length > 0 ? val[0].height : 0}
+                // width={val?.[0]?.width}
+                width={val.length > 0 ? val[0].width : 0}
                 key={index}
               />              
               {console.log("val", val, index)}
