@@ -4,6 +4,9 @@ from bson import Binary
 import base64
 import io
 import logging
+from datasets.moneySet.moneyModel import predictMoney
+from datasets.sodaSet.sodaModel import predictSoda
+from datasets.phoneSet.phoneModel import predictPhone
 
 app = Flask(__name__)
 
@@ -19,6 +22,7 @@ mongo = PyMongo(app)
 def print_transcript():
     data = request.json
     transcript = data.get('transcript', '')
+
 
 # POST endpoint to add images, descriptions, and keywords to the database
 @app.route('/upload', methods=['POST'])
