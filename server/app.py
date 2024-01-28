@@ -4,6 +4,9 @@ from bson import Binary
 import base64
 import io
 import logging
+from datasets.moneySet.moneyModel import predictMoney
+from datasets.sodaSet.sodaModel import predictSoda
+from datasets.phoneSet.phoneModel import predictPhone
 
 
 app = Flask(__name__)
@@ -11,6 +14,7 @@ app = Flask(__name__)
 # Memories database containing images, description, and object keywords
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/memories'
 mongo = PyMongo(app)
+
 
 
 # POST endpoint to add images, descriptions, and keywords to the database
