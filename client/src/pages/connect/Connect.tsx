@@ -1,6 +1,10 @@
 import React, { useRef, useState, ChangeEvent } from 'react'
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/react'
+import rachelteam from "../../assets/rachelsteam.png"; 
+import atrium from "../../assets/IMG_1774.jpg";
+import stanley from "../../assets/IMG_1769.jpg";
+import sophieteam from "../../assets/IMG_1770.jpg";
 import Marracas from "../../assets/marracas.gif";
 import { BottomBlob, TopBlob } from '../home/Hero';
 import Background2 from "../../assets/background2.png";
@@ -8,7 +12,7 @@ import Background1 from "../../assets/background1.png";
 const Connect = () => {
   const [files, setFiles] = useState<FileList | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const media: string[] = [Marracas, Marracas, Marracas, Marracas];
+  const media: string[] = [rachelteam, stanley, sophieteam, atrium];
 
 
   const convertToBase64 = (file: File) => {
