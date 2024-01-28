@@ -7,6 +7,7 @@ from datasets.moneySet.moneyModel import predictMoney
 from datasets.sodaSet.sodaModel import predictSoda
 from datasets.phoneSet.phoneModel import predictPhone
 from PIL import Image
+from flask_cors import CORS
 
 app = Flask(__name__)
 
@@ -24,6 +25,7 @@ def print_transcript():
     data = request.json
     transcript = data.get('transcript', '')
 
+    
 
 # POST endpoint to add images, descriptions, and keywords to the database
 @app.route('/upload', methods=['POST'])
