@@ -21,6 +21,24 @@ const MyMind: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
   const [coordinates , setCoordinates] = useState<any>();
+
+    
+   // Initialize score state
+  const [score, setScore] = useState<number>(60);
+
+  // Function to update score
+  const updateScore = () => {
+    setScore(prevScore => prevScore + 20);
+  };
+
+  // Placeholder for unblur function
+  const unblurImage = () => {
+    // Unblur logic goes here...
+
+    // Update the score each time an image is unblurred
+    updateScore();
+  };
+  
   const [currentImage, setCurrentImage] = useState<any>("");
   const [blurs, setBlurs] = useState<BlurComponentProps[]>([{
     x: 10,
@@ -250,7 +268,7 @@ const MyMind: React.FC = () => {
           </TranscriptionContainer>
           
           <Scoreboard>
-                  hey
+                  score:  {score}/100
           </Scoreboard>
         </RightContainer>
       </div>
@@ -304,7 +322,7 @@ const RightContainer = styled.div`
 const TranscriptionContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
   border-radius: 10px;
-  height: calc(75%);
+  height: calc(90%);
   width: calc(100%-20px);
   margin: 10px;
   margin-top: 0;
@@ -405,7 +423,7 @@ const Transcript = styled.div`
 const Scoreboard = styled.div`
   background: linear-gradient(to bottom right, #44A2B1, #B54382);
   border-radius: 10px;
-  height: calc(25%);
+  height: calc(10%);
   width: calc(100%-20px);
   margin: 10px;
   margin-bottom:0px;
@@ -414,5 +432,24 @@ const Scoreboard = styled.div`
   padding: 10px;
   padding-top: 20px;
   margin-top: 0px;
+  color: white;
+  font-size: 31px;
+  justify-content: center;
+  text-align: center;
+  font-family: Helvetica Now Display;
+  font-weight: 500;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
 `
 export default MyMind;
