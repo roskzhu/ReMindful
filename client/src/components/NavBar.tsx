@@ -8,15 +8,24 @@ const NavBar = () => {
   const navigate = useNavigate();
   const [ hoveredTab, setHoveredTab] = useState(0);
   return (
-    <OuterContainer>
-      <NavBarContainer>
+    <OuterCountainer>
+      <NavBarContainer onMouseLeave={() => setHoveredTab(0)}>
+        <SliderBlock location={hoveredTab}/>
         <NavBarSubContainer>
-          <Link to={"/"} className='link'>
+          <Link 
+            to={"/"} 
+            className='link' 
+            onMouseOver={() => setHoveredTab(1)}
+          >
             <Label2 className='cursor: pointer;'>
               Home
             </Label2>
           </Link>
-          <Link to={"/connect"} className='link'>
+          <Link 
+            to={"/connect"} 
+            className='link' 
+            onMouseOver={() => setHoveredTab(2)}
+          >
             <Label2 className='cursor: pointer;'>
               Connect
             </Label2>
@@ -38,8 +47,9 @@ const NavBar = () => {
             My Mind
           </Button1>
         </NavBarSubContainer>
+        <div></div>
       </NavBarContainer>
-    </OuterContainer>
+    </OuterCountainer>
   )
 }
 
@@ -72,13 +82,6 @@ const NavBarContainer = styled.div`
   .link {
     text-decoration: none;
   }
-`
-
-const OuterContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `
 
 
