@@ -28,7 +28,7 @@ const Connect = () => {
     
     console.log("base64String: ", base64String)
     const requestBody = {
-      image: base64String,
+      image: base64String.slice(23),  // "data:image/jpeg;base64,".length
       description: description,
       keywords: keywords,
     };
@@ -52,15 +52,19 @@ const Connect = () => {
   };
 
 
-  const handleChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     console.log("pog")
     const selectedFiles = e.currentTarget.files;
 
     if (selectedFiles) {
       setFiles(selectedFiles);
-      convertToBase64(selectedFiles[0]);
+      if (selectedFiles) {
+        console.log("selected files converted to base 64");
+        convertToBase64(selectedFiles[0]);
+      }
     }
   };
+
 
   
   return (
@@ -84,8 +88,7 @@ const Connect = () => {
             onClick={() => fileInputRef.current?.click()}>
               <p>
                 Upload Photos!
-              </p>
-              
+              </p>              
           </UploadButton>
         </UploadContainer>
         <FilesContainer>
@@ -105,7 +108,6 @@ const Connect = () => {
           }
         </MediaGallery>
       </MediaContainer>
-
 
     </ConnectContainer>
   )
