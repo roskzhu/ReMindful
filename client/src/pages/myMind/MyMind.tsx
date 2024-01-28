@@ -40,14 +40,10 @@ const MyMind: React.FC = () => {
           const speechToText: string = event.results[0][0].transcript;
           setTranscript(speechToText);
           console.log("Transcript:", speechToText);
-
           // Send the transcript to the server
           fetch("http://127.0.0.1:5000/print_transcript", {
             method: "POST",
             mode: "cors",
-            headers: {
-              "Content-Type": "application/json",
-            },
             body: JSON.stringify({ transcript: speechToText }),
           })
             .then((response) => {
@@ -64,13 +60,25 @@ const MyMind: React.FC = () => {
             .catch((error) => {
               console.error(error.message);
             });
+            setIsTranscribing(false);
         };     
     };
   }, [isTranscribing]);
 
+
   const stopTranscription = (): void => {
     setIsTranscribing(false);
   };
+
+  useEffect(() => {
+    if(transcript) {
+      const newChatMessage: ChatMessage = {
+        content: transcript,
+        sender: 2,
+      };
+      setChatHistory([...chatHistory, newChatMessage])
+    }
+  }, [transcript]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -95,7 +103,11 @@ const MyMind: React.FC = () => {
 
         <RightContainer>
           <TranscriptionContainer>
-          {transcript && <p>Transcription: {transcript}</p>}
+            <Transcript>
+              {chatHistory.map((chatMessage, index) => (
+                <p key={index}>{chatMessage.content}</p>
+              ))}
+            </Transcript>
             <Toolkit onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -236,6 +248,11 @@ const Transcript = styled.div`
   width: 100%;
   overflow-y: scroll;
   align-content: end;
+  flex-direction: column;
+  > p {
+    color: white;
+    font-size: 12px;
+  }
 `
 
 export default MyMind;

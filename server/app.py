@@ -22,10 +22,17 @@ mongo = PyMongo(app)
 
 @app.route('/print_transcript', methods=['POST'])
 def print_transcript():
-    data = request.json
-    transcript = data.get('transcript', '')
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'Preflight request successful'})
+    else:
+        data = request.get_json()
+        transcript = data.get('transcript')
+        # Your processing logic here
+        response = jsonify({"message": "Transcript received successfully!"})
 
-    
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    return response
 
 # POST endpoint to add images, descriptions, and keywords to the database
 @app.route('/upload', methods=['POST'])
