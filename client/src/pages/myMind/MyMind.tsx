@@ -3,11 +3,14 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { IoMdSend } from "react-icons/io";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
+import Background1 from '../../assets/test.png'
+import BlurComponent, { BlurComponentProps } from '../../components/BlurComponent';
 
 interface ChatMessage {
   content: string;
   sender: number;
 }
+
 
 const MyMind: React.FC = () => {
   const [transcript, setTranscript] = useState<string>('');
@@ -15,6 +18,14 @@ const MyMind: React.FC = () => {
   const [message, setMessage] = useState<string>('');
   const [serverResponse, setServerResponse] = useState<any>(null); 
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+
+  const [currentImage, setCurrentImage] = useState<any>("");
+  const [blurs, setBlurs] = useState<BlurComponentProps[]>([{
+    x: 10,
+    y: 30,
+    height: 380,
+    width: 330,
+  }]);
 
   useEffect(() => {
       if(isTranscribing) {
@@ -65,7 +76,30 @@ const MyMind: React.FC = () => {
     };
   }, [isTranscribing]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/retrieve', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
+        if (response.ok) {
+          const data = await response.json();
+          setCurrentImage(data);
+        } else {
+
+          console.error('Failed to retrieve data from the server.');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+  }, []);
+  
   const stopTranscription = (): void => {
     setIsTranscribing(false);
   };
@@ -83,7 +117,7 @@ const MyMind: React.FC = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     // sendTranscript(message);
-    if(message.trim() != "") {
+    if(message.trim() !== "") {
       const newChatMessage: ChatMessage = {
         content: message,
         sender: 2,
@@ -98,15 +132,27 @@ const MyMind: React.FC = () => {
     <MyMindContainer>
       <div>
         <CurrentImage>
-          
+          <img src={Background1} />
+          {blurs && blurs.map((blur, index) => 
+            <BlurComponent 
+              x = {blur.x}
+              y = {blur.y}
+              height = {blur.height}
+              width = {blur.width}
+              key={index}
+            />
+          )}
         </CurrentImage>
 
         <RightContainer>
           <TranscriptionContainer>
             <Transcript>
-              {chatHistory.map((chatMessage, index) => (
-                <p key={index}>{chatMessage.content}</p>
-              ))}
+              <div>
+
+                {chatHistory.map((chatMessage, index) => (
+                  <p key={index}>{chatMessage.content}</p>
+                ))}
+              </div>
             </Transcript>
             <Toolkit onSubmit={handleSubmit}>
               <input
@@ -124,8 +170,12 @@ const MyMind: React.FC = () => {
                 <FaMicrophoneSlash className='icon'/> Stop
               </button>
             </Toolkit>
-           
+          
           </TranscriptionContainer>
+          
+          <Scoreboard>
+                  hey
+          </Scoreboard>
         </RightContainer>
       </div>
     </MyMindContainer>
@@ -134,13 +184,12 @@ const MyMind: React.FC = () => {
 
 const MyMindContainer = styled.div`
   width: 100vw;
-  height: calc(100vh);
+  height: calc(80vh);
   display: flex;
   justify-content: center;
   align-items: center;
   > div {
-    margin-top: 120px;
-    background-color: red;
+    margin-top: 240px;
     height: 80vh;
     width: 80vw;
     display: flex;
@@ -150,24 +199,39 @@ const MyMindContainer = styled.div`
 `
 
 const CurrentImage = styled.div`
-  background-color: white;
-  width: 50%;
-  height: 100%;
+  height: 640px;
+  width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  > img {
+    height: 640px;
+    width: 640px;
+    object-fit: cover;
+    border-radius: 10px;
+
+  }
   
 `
 
 const RightContainer = styled.div`
-  width: 50%;
+  width: calc(50%);
   height: 100%;
-  background-color: purple;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 640px;
+  
 `
 // background: linear-gradient(to bottom right, #44A2B1, #B54382);
 const TranscriptionContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.9);
   border-radius: 10px;
-  height: calc(50%);
+  height: calc(75%);
   width: calc(100%-20px);
   margin: 10px;
+  margin-top: 0;
   display: flex;
   position: relative;
   input {
@@ -246,13 +310,33 @@ const Transcript = styled.div`
   display: flex;
   height: 80%;
   width: 100%;
-  overflow-y: scroll;
-  align-content: end;
+
+  justify-content: end;
   flex-direction: column;
-  > p {
+  padding: 20px;
+
+  > div {
+    overflow-y: scroll;
     color: white;
-    font-size: 12px;
+    margin-bottom: 22px;
+  }
+  p {
+    color: white;
+    font-size: 18px;
   }
 `
 
+const Scoreboard = styled.div`
+  background: linear-gradient(to bottom right, #44A2B1, #B54382);
+  border-radius: 10px;
+  height: calc(25%);
+  width: calc(100%-20px);
+  margin: 10px;
+  margin-bottom:0px;
+  display: flex;
+  position: relative;
+  padding: 10px;
+  padding-top: 20px;
+  margin-top: 0px;
+`
 export default MyMind;

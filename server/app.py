@@ -1,4 +1,5 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, make_response, request, jsonify, send_file
+from flask import Response
 from flask_pymongo import PyMongo
 from bson import Binary
 import base64, binascii
@@ -12,7 +13,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 
 # Enable CORS for all domains on all routes
-CORS(app, origins=["http://localhost:3000"])
+CORS(app)
 # app = Flask(__name__)
 # print(predictMoney('./datasets/moneySet/money2.jpg'))
 
@@ -27,11 +28,9 @@ def print_transcript():
     else:
         data = request.get_json()
         transcript = data.get('transcript')
-        # Your processing logic here
         response = jsonify({"message": "Transcript received successfully!"})
 
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
-    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+
     return response
 
 # POST endpoint to add images, descriptions, and keywords to the database
@@ -112,7 +111,7 @@ def retrieve_image():
 
             # Send the file as a response
             # return send_file('', mimetype='image/jpeg')  # Adjust mimetype based on your image type
-            return jsonify({'message': 'Models ran successfully', 'objects_detected' : objects_detected, 'img_path': output_path})
+            return jsonify({'message': 'Models ran successfully', 'objects_detected' : objects_detected, 'img_path': output_path}, {"Access-Control-Allow-Origin": "*"})
 
         else:
             return jsonify({'error': 'No images found'})
