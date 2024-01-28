@@ -3,7 +3,7 @@ import axios from 'axios';
 import styled from '@emotion/styled';
 import { IoMdSend } from "react-icons/io";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
-import Background1 from '../../assets/test.png'
+import Background1 from '../../assets/imgQAWRX.jpeg'
 import BlurComponent, { BlurComponentProps } from '../../components/BlurComponent';
 
 interface ChatMessage {
@@ -11,14 +11,14 @@ interface ChatMessage {
   sender: number;
 }
 
-
 const MyMind: React.FC = () => {
   const [transcript, setTranscript] = useState<string>('');
   const [isTranscribing, setIsTranscribing] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
-  const [serverResponse, setServerResponse] = useState<any>(null); 
+  const [serverResponse, setServerResponse] = useState<any>(null);  // transcription
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
 
+  const [coordinates , setCoordinates] = useState<any>();
   const [currentImage, setCurrentImage] = useState<any>("");
   const [blurs, setBlurs] = useState<BlurComponentProps[]>([{
     x: 10,
@@ -79,6 +79,7 @@ const MyMind: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("begin fetch")
         const response = await fetch('http://localhost:5000/retrieve', {
           method: 'GET',
           headers: {
@@ -88,7 +89,10 @@ const MyMind: React.FC = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setCurrentImage(data);
+          console.log("response ok: ", data)
+          // console
+          setCurrentImage(data[0]?.img_path);  // string
+          setCoordinates(data[0]?.objects_detected);  // dict of objects
         } else {
 
           console.error('Failed to retrieve data from the server.');
@@ -99,6 +103,9 @@ const MyMind: React.FC = () => {
     };
     fetchData();
   }, []);
+
+  console.log("curr", currentImage);
+  console.log("coor: ", coordinates);
   
   const stopTranscription = (): void => {
     setIsTranscribing(false);
@@ -128,20 +135,34 @@ const MyMind: React.FC = () => {
     }
   }
 
+
+
   return (
     <MyMindContainer>
       <div>
         <CurrentImage>
-          <img src={Background1} />
-          {blurs && blurs.map((blur, index) => 
-            <BlurComponent 
-              x = {blur.x}
-              y = {blur.y}
-              height = {blur.height}
-              width = {blur.width}
-              key={index}
-            />
-          )}
+          <img src={Background1}/>
+            {/* {coordinates && coordinates.map((val : any, index : any) =>  // index is the type
+              <BlurComponent 
+                x = {coordinates.index[0].x}
+                y = {coordinates.index[0].y}
+                height = {coordinates.index[0].height}
+                width = {coordinates.index[0].width}
+                key={index}
+              />
+            )} */}
+            {coordinates && Object.values(coordinates).map((val: any, index: any) => (
+              <>
+              <BlurComponent 
+                x={val?.[0]?.x}
+                y={val?.[0]?.y}
+                height={val?.[0]?.height}
+                width={val?.[0]?.width}
+                key={index}
+              />              
+              {console.log("val", val, index)}
+              </>
+            ))}
         </CurrentImage>
 
         <RightContainer>
