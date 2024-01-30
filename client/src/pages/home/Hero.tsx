@@ -43,6 +43,7 @@ const TextContainer = styled.div`
   flex-direction: column;
   font-family: Helvetica Now Display;
   margin-right: 40px;
+  z-index: 2;
   > h1 {
     font-size: 70px;
     font-weight: 500;
