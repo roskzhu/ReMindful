@@ -4,7 +4,7 @@
           <summary><h1 style="display: inline-block; margin-bottom:0px; font-size:60pt;">ReMindful</h1></summary>
       </ul>
     </div>
-<!--     <h3>Your Emotional Intelligence Partner</h3> -->
+    <h3>you used to recall me on my cell phone</h3>
 <!--     <h4><i>🏅 1st Place SheHacks Winner</i></h4> -->
    <br>
     <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54"/>
@@ -19,12 +19,11 @@
 
 
 
-you used to recall me on my cell phone
 
 
 react typescript frontend
 python flask backend
-sql or mongo database
+mongo database
 roboflow yolov8 for object detection
 
 stable diffusion if we have time for censoring? (to replicate adobe's generative fill tool)
@@ -39,11 +38,6 @@ stable diffusion if we have time for censoring? (to replicate adobe's generative
 2. Install required dependencies in root folder and both frontend and backend folders
 ```
 npm install
-```
-
-3. Create a `.env` file in this folder with the following variables:
-```
-OPENAI_API_KEY={YOUR_API_KEY}
 ```
 
 ### Starting the server
