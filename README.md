@@ -49,7 +49,7 @@ To train our object detection model using Roboflow and YOLOv8, we began by curat
 
 
 ## Architecture Overview
-![ReMindful drawio](https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/739/305/datas/original.png)
+![pasta(remindful) drawio](https://github.com/roskzhu/ReMindful/assets/110139243/e13a5f11-4162-47ef-91ed-41207cccad25)
 
 
 ## Getting Started
