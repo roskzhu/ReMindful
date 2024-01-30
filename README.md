@@ -1,5 +1,12 @@
 remindful
 
+![image](https://github.com/roskzhu/ReMindful/assets/110139243/c6f373ef-67cf-43c4-91f8-71bc7f24f96a)
+
+![image](https://github.com/roskzhu/ReMindful/assets/110139243/5c7dcc0b-816e-4161-a101-7210bf40ec61)
+
+![image](https://github.com/roskzhu/ReMindful/assets/110139243/77f8f15e-4360-43e0-a282-90419b940ad3)
+
+
 you used to recall me on my cell phone
 
 
