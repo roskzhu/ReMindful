@@ -2,7 +2,8 @@ remindful
 
 ![image](https://github.com/roskzhu/ReMindful/assets/110139243/c6f373ef-67cf-43c4-91f8-71bc7f24f96a)
 
-![image](https://github.com/roskzhu/ReMindful/assets/110139243/5c7dcc0b-816e-4161-a101-7210bf40ec61)
+![image](https://github.com/roskzhu/ReMindful/assets/110139243/8a68ddae-5890-4911-aac1-c6d96b13d103)
+
 
 ![image](https://github.com/roskzhu/ReMindful/assets/110139243/77f8f15e-4360-43e0-a282-90419b940ad3)
 
