@@ -62,7 +62,6 @@ const Connect = () => {
         </MediaGallery>
       </MediaContainer>
 
-
     </ConnectContainer>
   )
 }
